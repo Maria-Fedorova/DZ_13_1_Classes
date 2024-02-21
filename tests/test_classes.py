@@ -18,7 +18,7 @@ def test_product_init(apple):
     assert apple.name == "apple"
     assert apple.description == "description"
     assert apple.price == 300.50
-    assert apple.number_present == 5
+    assert apple.quantity == 5
 
 def test_number_of_categories():
     assert classes.Category.number_of_categories == 2

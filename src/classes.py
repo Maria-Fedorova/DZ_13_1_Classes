@@ -19,6 +19,9 @@ class Category:
 
         Category.number_of_categories += 1
 
+    def __repr__(self):
+        return f'name={self.name}, description={self.description}, products={self.products})'
+
 
 '''Создание класса Product'''
 
@@ -28,22 +31,27 @@ class Product:
     name: str
     description: str
     price: float
-    amount_present: int
+    quantity: int
 
     # Переменные на уровне класса
     number_of_unique_products = 0
 
     '''Конструктор для инициализации экземпляра класса.
         Задаем значения атрибутам экземпляра класса'''
-    def __init__(self, name, description, price, number_present):
+    def __init__(self, name, description, price, quantity):
         self.name = name
         self.description = description
         self.price = price
-        self.number_present = number_present
+        self.quantity = quantity
 
         Product.number_of_unique_products += 1
+
+    def __repr__(self):
+        return f'name={self.name}, description={self.description}, price={self.price}, number_present={self.quantity})'
 
 category_1 = Category('fruits', 'description', ["apple", "banana", "grape"])
 category_2 = Category('vegetables', 'description', ["cucumber", "potato", "tomato"])
 product_1 = Product('apple', 'description', 300.50, 5)
 product_2 = Product('tomato', 'description', 20.50, 3)
+
+print(type(category_1))
