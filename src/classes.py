@@ -43,7 +43,7 @@ class Product:
 
         Product.number_of_unique_products += 1
 
-    category_1 = Category('fruits', 'description', ["apple", "banana", "grape"])
-    product_1 = Product("apple", "description", 300.50, 5)
-
-    print(Category.number_of_categories)
+category_1 = Category('fruits', 'description', ["apple", "banana", "grape"])
+category_2 = Category('vegetables', 'description', ["cucumber", "potato", "tomato"])
+product_1 = Product('apple', 'description', 300.50, 5)
+product_2 = Product('tomato', 'description', 20.50, 3)

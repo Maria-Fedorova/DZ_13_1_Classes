@@ -21,7 +21,7 @@ def test_product_init(apple):
     assert apple.number_present == 5
 
 def test_number_of_categories():
-    assert classes.Category.number_of_categories == 1
+    assert classes.Category.number_of_categories == 2
 
 def test_number_of_unique_products():
-    assert classes.Product.number_of_unique_products == 0
+    assert classes.Product.number_of_unique_products == 2
