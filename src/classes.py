@@ -1,7 +1,7 @@
-'''Создание класса Category'''
-
-
 class Category:
+
+    '''Создание класса Category'''
+
     # Свойства (атрибуты) класса
     name: str
     description: str
@@ -10,9 +10,10 @@ class Category:
     # Переменные на уровне класса
     number_of_categories = 0
 
-    '''Конструктор для инициализации экземпляра класса.
-    Задаем значения атрибутам экземпляра класса'''
+
     def __init__(self, name, description, products):
+        '''Конструктор для инициализации экземпляра класса.
+        Задаем значения атрибутам экземпляра класса'''
         self.name = name
         self.description = description
         self.products = products
@@ -22,11 +23,10 @@ class Category:
     def __repr__(self):
         return f'name={self.name}, description={self.description}, products={self.products})'
 
-
-'''Создание класса Product'''
-
-
 class Product:
+
+    '''Создание класса Product'''
+
     # Свойства (атрибуты) класса
     name: str
     description: str
@@ -36,9 +36,10 @@ class Product:
     # Переменные на уровне класса
     number_of_unique_products = 0
 
-    '''Конструктор для инициализации экземпляра класса.
-        Задаем значения атрибутам экземпляра класса'''
+
     def __init__(self, name, description, price, quantity):
+        '''Конструктор для инициализации экземпляра класса.
+            Задаем значения атрибутам экземпляра класса'''
         self.name = name
         self.description = description
         self.price = price
@@ -48,10 +49,3 @@ class Product:
 
     def __repr__(self):
         return f'name={self.name}, description={self.description}, price={self.price}, number_present={self.quantity})'
-
-category_1 = Category('fruits', 'description', ["apple", "banana", "grape"])
-category_2 = Category('vegetables', 'description', ["cucumber", "potato", "tomato"])
-product_1 = Product('apple', 'description', 300.50, 5)
-product_2 = Product('tomato', 'description', 20.50, 3)
-
-print(type(category_1))
