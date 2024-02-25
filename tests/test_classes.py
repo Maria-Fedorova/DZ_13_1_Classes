@@ -3,8 +3,9 @@ from src import classes
 
 
 @pytest.fixture
-def fruits():
-    return classes.Category("fruits", "description", ["apple", "banana", "grape"])
+def category():
+    return (classes.Category("fruits", "description", ["apple", "banana", "grape"]),
+            classes.Category("vegetables", "description", ["cucumber", "potato", "tomato"]))
 
 
 @pytest.fixture
@@ -12,13 +13,15 @@ def apple():
     return classes.Product("apple", "description", 300.50, 5)
 
 
-def test_category_init(fruits):
+def test_category_init(category):
     """
     Тест инициализации класса Категория
     """
-    assert fruits.name == "fruits"
-    assert fruits.description == "description"
-    assert fruits.products == ["apple", "banana", "grape"]
+    assert category[0].name == "fruits"
+    assert category[0].description == "description"
+    assert category[0].products == ["apple", "banana", "grape"]
+    assert category[0].number_of_unique_products == 3
+    assert category[1].number_of_unique_products == 3
 
 
 def test_product_init(apple):
@@ -31,15 +34,17 @@ def test_product_init(apple):
     assert apple.quantity == 5
 
 
-def test_number_of_categories():
+def test_number_of_categories(category):
     """
     Тест на провеоку подсчёта количества категорий
     """
-    assert classes.Category.number_of_categories == 1
+    assert category[0].number_of_categories == 1
+    assert category[1].number_of_categories == 1
 
 
-def test_number_of_unique_products():
+def test_number_of_unique_products(category):
     """
     Тест на провеоку подсчёта количества продуктов
     """
-    assert classes.Product.number_of_unique_products == 1
+    assert category[0].number_of_unique_products == 3
+    assert category[1].number_of_unique_products == 3
