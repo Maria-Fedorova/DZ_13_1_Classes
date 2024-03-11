@@ -26,8 +26,13 @@ class Category:
         Продукт, 80 руб. Остаток: 15 шт."""
         list_product = []
         for product in self.__products:
-            list_product.append(f'{product["name"]}, {product["price"]} руб. Остаток: {product["quantity"]} шт.')
+            list_product.append(f'{product.name}, {product.price} руб. Остаток: {product.quantity} шт.')
         return "\n".join(list_product)
+
+    @products.setter
+    def products(self, new_product):
+        self.__products.append(new_product)
+        self.number_of_unique_products += 1
 
     def __repr__(self):
         return f'name={self.name}, description={self.description}, products={self.__products})'
@@ -52,11 +57,11 @@ class Product:
         self.quantity = quantity
 
     @classmethod
-    def create_product(cls, name, description, price, quantity):
+    def create_product(cls, product_data):
         """
         Создает товар и возвращает объект, который можно добавлять в список товаров
         """
-        return {"name": name, "description": description, "price": price, "quantity": quantity}
+        return cls(**product_data)
 
     @property
     def price(self):

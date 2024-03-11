@@ -27,14 +27,22 @@ def test_category_init(category):
 
 def test_products():
     """
-    Тест геттера, который выводит список товаров в формате:
+    1. Тест геттера, который выводит список товаров в формате:
     Продукт, 80 руб. Остаток: 15 шт.
+    2. Тест сеттера, который добавляет товары
     """
     x = utils.load_data('products.json')
     y = utils.create_objects_category_product(x)
     assert y[0][0].products == (f'Samsung Galaxy C23 Ultra, 180000.0 руб. Остаток: 5 шт.\n'
                                 f'Iphone 15, 210000.0 руб. Остаток: 8 шт.\n'
                                 f'Xiaomi Redmi Note 11, 31000.0 руб. Остаток: 14 шт.')
+    assert y[0][0].number_of_unique_products == 3
+    y[0][0].products = classes.Product(name="pear", description="pear_description", price=100.50, quantity=17)
+    assert y[0][0].products == (f'Samsung Galaxy C23 Ultra, 180000.0 руб. Остаток: 5 шт.\n'
+                                f'Iphone 15, 210000.0 руб. Остаток: 8 шт.\n'
+                                f'Xiaomi Redmi Note 11, 31000.0 руб. Остаток: 14 шт.\n'
+                                f'pear, 100.5 руб. Остаток: 17 шт.')
+    assert y[0][0].number_of_unique_products == 4
 
 
 def test_product_init(fruits):
@@ -49,10 +57,11 @@ def test_product_init(fruits):
 
 def test_create_product():
     """
-    Проверка создания товара
+    Проверка создания товара и возврата объекта
     """
-    assert (classes.Product.create_product(name="mango", description="mango_description", price=5.0, quantity=5) ==
-            {"name": "mango", "description": "mango_description", "price": 5.0, "quantity": 5})
+    assert (str(classes.Product.create_product(
+        {"name": "mango", "description": "mango_description", "price": 5.0, "quantity": 5})) ==
+            str(classes.Product(name="mango", description="mango_description", price=5.0, quantity=5)))
 
 
 def test_price(fruits):
