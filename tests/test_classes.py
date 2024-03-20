@@ -1,5 +1,5 @@
 import pytest
-from src import classes
+from src import classes, utils
 
 
 @pytest.fixture
@@ -9,8 +9,9 @@ def category():
 
 
 @pytest.fixture
-def apple():
-    return classes.Product("apple", "description", 300.50, 5)
+def fruits():
+    return (classes.Product("apple", "apple_description", 300.50, 5),
+            classes.Product("pear", "pear_description", 100.50, 17))
 
 
 def test_category_init(category):
@@ -19,19 +20,61 @@ def test_category_init(category):
     """
     assert category[0].name == "fruits"
     assert category[0].description == "description"
-    assert category[0].products == ["apple", "banana", "grape"]
+    assert category[0]._Category__products == ["apple", "banana", "grape"]
     assert category[0].number_of_unique_products == 3
     assert category[1].number_of_unique_products == 3
 
 
-def test_product_init(apple):
+def test_products():
+    """
+    1. Тест геттера, который выводит список товаров в формате:
+    Продукт, 80 руб. Остаток: 15 шт.
+    2. Тест сеттера, который добавляет товары
+    """
+    x = utils.load_data('products.json')
+    y = utils.create_objects_category_product(x)
+    assert y[0][0].products == (f'Samsung Galaxy C23 Ultra, 180000.0 руб. Остаток: 5 шт.\n'
+                                f'Iphone 15, 210000.0 руб. Остаток: 8 шт.\n'
+                                f'Xiaomi Redmi Note 11, 31000.0 руб. Остаток: 14 шт.')
+    assert y[0][0].number_of_unique_products == 3
+    y[0][0].products = classes.Product(name="pear", description="pear_description", price=100.50, quantity=17)
+    assert y[0][0].products == (f'Samsung Galaxy C23 Ultra, 180000.0 руб. Остаток: 5 шт.\n'
+                                f'Iphone 15, 210000.0 руб. Остаток: 8 шт.\n'
+                                f'Xiaomi Redmi Note 11, 31000.0 руб. Остаток: 14 шт.\n'
+                                f'pear, 100.5 руб. Остаток: 17 шт.')
+    assert y[0][0].number_of_unique_products == 4
+
+
+def test_product_init(fruits):
     """
     Тест инициализации класса Продукт
     """
-    assert apple.name == "apple"
-    assert apple.description == "description"
-    assert apple.price == 300.50
-    assert apple.quantity == 5
+    assert fruits[0].name == "apple"
+    assert fruits[0].description == "apple_description"
+    assert fruits[0].price == 300.50
+    assert fruits[0].quantity == 5
+
+
+def test_create_product():
+    """
+    Проверка создания товара и возврата объекта
+    """
+    assert (str(classes.Product.create_product(
+        {"name": "mango", "description": "mango_description", "price": 5.0, "quantity": 5})) ==
+            str(classes.Product(name="mango", description="mango_description", price=5.0, quantity=5)))
+
+
+def test_price(fruits):
+    """
+    Проверка геттера, сеттера и делитера цены
+    """
+    assert fruits[0].price == 300.5
+    fruits[0].price = 100.0
+    assert fruits[0].price == 100.0
+    fruits[0].price = -1
+    assert fruits[0].price <= 0, "Цена введена некорректная"
+    del fruits[0].price
+    assert fruits[0].price is None
 
 
 def test_number_of_categories(category):
