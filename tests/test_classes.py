@@ -45,6 +45,27 @@ def test_products():
     assert y[0][0].number_of_unique_products == 4
 
 
+def test__len__cat():
+    """
+    Проверка вывода количества продуктов на складе
+    """
+    x = utils.load_data('products.json')
+    y = utils.create_objects_category_product(x)
+    assert len(y[0][0]) == 27
+    assert len(y[0][1]) == 7
+
+
+def test__str__cat():
+    """
+    Проверка для класса Category: добавляет строковое отображение в следующем виде:
+    "Название категории, количество продуктов: 200 шт."
+    """
+    x = utils.load_data('products.json')
+    y = utils.create_objects_category_product(x)
+    assert str(y[0][0]) == f'{y[0][0].name}, количество продуктов: {len(y[0][0])} шт.'
+    assert str(y[0][1]) == f'{y[0][1].name}, количество продуктов: {len(y[0][1])} шт.'
+
+
 def test_product_init(fruits):
     """
     Тест инициализации класса Продукт
@@ -62,6 +83,18 @@ def test_create_product():
     assert (str(classes.Product.create_product(
         {"name": "mango", "description": "mango_description", "price": 5.0, "quantity": 5})) ==
             str(classes.Product(name="mango", description="mango_description", price=5.0, quantity=5)))
+
+
+def test__str__prod(fruits):
+    """
+    Проверка для класса Product: добавляет строковое отображение в следующем виде:
+    "Название продукта, 80 руб. Остаток: 15 шт."
+    """
+    assert str(fruits[0]) == f'{fruits[0].name}, {fruits[0].price} руб. Остаток: {len(fruits[0])} шт.'
+
+
+def test__add__prod(fruits):
+    assert fruits[0] + fruits[1] == fruits[0].price * fruits[0].quantity + fruits[1].price * fruits[1].quantity
 
 
 def test_price(fruits):
