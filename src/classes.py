@@ -31,8 +31,14 @@ class Category:
 
     @products.setter
     def products(self, new_product):
-        self.__products.append(new_product)
-        self.number_of_unique_products += 1
+        """
+        Добавляет продукт в категорию
+        """
+        if isinstance(new_product, Product):
+            self.__products.append(new_product)
+            self.number_of_unique_products += 1
+        else:
+            raise TypeError("Добавлять можно только Продукты и дочение классы")
 
     def __len__(self):
         """
@@ -101,6 +107,8 @@ class Product:
         """
         Сложение объектов между собой
         """
+        if type(self) != type(other):
+            raise TypeError('Складывать можно только объекты одного типа.')
         return self.price * self.quantity + other.price * other.quantity
 
     @property
@@ -119,3 +127,37 @@ class Product:
 
     def __repr__(self):
         return f'name={self.name}, description={self.description}, price={self.price}, number_present={self.quantity})'
+
+
+class Smartphone(Product):
+
+    # Свойства (атрибуты) класса
+    performance: float
+    model: str
+    built_in_memory: int
+    color: str
+
+    def __init__(self, name, description, price, quantity, performance, model, built_in_memory, color):
+        """Конструктор для инициализации экземпляра класса.
+            Задаем значения атрибутам экземпляра класса"""
+        super().__init__(name, description, price, quantity)
+        self.performance = performance
+        self.model = model
+        self.built_in_memory = built_in_memory
+        self.color = color
+
+
+class LawnGrass(Product):
+
+    # Свойства (атрибуты) класса
+    manufacturer_country: str
+    germination_period: float
+    color: str
+
+    def __init__(self, name, description, price, quantity, manufacturer_country, germination_period, color):
+        """Конструктор для инициализации экземпляра класса.
+            Задаем значения атрибутам экземпляра класса"""
+        super().__init__(name, description, price, quantity)
+        self.manufacturer_country = manufacturer_country
+        self.germination_period = germination_period
+        self.color = color

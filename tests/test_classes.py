@@ -14,6 +14,17 @@ def fruits():
             classes.Product("pear", "pear_description", 100.50, 17))
 
 
+@pytest.fixture
+def smartphones():
+    return (classes.Smartphone("smartphone", "smartphone_description", 300.50, 5, 2.0, "model", 32, "red"),
+            classes.Smartphone("smartphone", "smartphone_description", 300.50, 5, 2.0, "model", 32, "red"))
+
+
+@pytest.fixture
+def lawn_grass():
+    return (classes.LawnGrass("lawn_grass", "lawn_grass_description", 300.50, 5, "England", 2.3, "red"),)
+
+
 def test_category_init(category):
     """
     Тест инициализации класса Категория
@@ -25,7 +36,7 @@ def test_category_init(category):
     assert category[1].number_of_unique_products == 3
 
 
-def test_products():
+def test_products(fruits, smartphones):
     """
     1. Тест геттера, который выводит список товаров в формате:
     Продукт, 80 руб. Остаток: 15 шт.
@@ -43,6 +54,13 @@ def test_products():
                                 f'Xiaomi Redmi Note 11, 31000.0 руб. Остаток: 14 шт.\n'
                                 f'pear, 100.5 руб. Остаток: 17 шт.')
     assert y[0][0].number_of_unique_products == 4
+
+    y[0][0].products = smartphones[0]
+    assert y[0][0].number_of_unique_products == 5
+    try:
+        y[0][0].products = "Ошибочная строка"
+    except TypeError:
+        assert True
 
 
 def test__len__cat():
@@ -93,8 +111,16 @@ def test__str__prod(fruits):
     assert str(fruits[0]) == f'{fruits[0].name}, {fruits[0].price} руб. Остаток: {len(fruits[0])} шт.'
 
 
-def test__add__prod(fruits):
+def test__add__prod(fruits, smartphones):
     assert fruits[0] + fruits[1] == fruits[0].price * fruits[0].quantity + fruits[1].price * fruits[1].quantity
+    assert fruits[0] + fruits[0] == fruits[0].price * fruits[0].quantity + fruits[0].price * fruits[0].quantity
+    assert smartphones[0] + smartphones[1] == smartphones[0].price * smartphones[0].quantity + smartphones[1].price * smartphones[1].quantity
+    try:
+        fruits[0] + smartphones[0]
+    except TypeError:
+        assert True
+
+
 
 
 def test_price(fruits):
@@ -108,6 +134,33 @@ def test_price(fruits):
     assert fruits[0].price <= 0, "Цена введена некорректная"
     del fruits[0].price
     assert fruits[0].price is None
+
+
+def test_smartphone_init(smartphones):
+    """
+    Тест инициализации класса Смартфон
+    """
+    assert smartphones[0].name == "smartphone"
+    assert smartphones[0].description == "smartphone_description"
+    assert smartphones[0].price == 300.50
+    assert smartphones[0].quantity == 5
+    assert smartphones[0].performance == 2.0
+    assert smartphones[0].model == "model"
+    assert smartphones[0].built_in_memory == 32
+    assert smartphones[0].color == "red"
+
+
+def test_lawngrass_init(lawn_grass):
+    """
+    Тест инициализации класса Смартфон
+    """
+    assert lawn_grass[0].name == "lawn_grass"
+    assert lawn_grass[0].description == "lawn_grass_description"
+    assert lawn_grass[0].price == 300.50
+    assert lawn_grass[0].quantity == 5
+    assert lawn_grass[0].manufacturer_country == "England"
+    assert lawn_grass[0].germination_period == 2.3
+    assert lawn_grass[0].color == "red"
 
 
 def test_number_of_categories(category):
