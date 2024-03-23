@@ -19,10 +19,11 @@ def create_objects_category_product(data):
     new_product = []
     for object in data:
         if len(data) != 0:
-            category = src.classes.Category(object['name'], object['description'], object['products'])
-            new_category.append(category)
+            category = src.classes.Category(object['name'], object['description'], [])
             for i_product in object['products']:
                 product = src.classes.Product(i_product['name'], i_product['description'], i_product['price'],
                                               i_product['quantity'])
                 new_product.append(product)
+                category.products = product
+            new_category.append(category)
     return new_category, new_product
