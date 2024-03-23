@@ -114,13 +114,12 @@ def test__str__prod(fruits):
 def test__add__prod(fruits, smartphones):
     assert fruits[0] + fruits[1] == fruits[0].price * fruits[0].quantity + fruits[1].price * fruits[1].quantity
     assert fruits[0] + fruits[0] == fruits[0].price * fruits[0].quantity + fruits[0].price * fruits[0].quantity
-    assert smartphones[0] + smartphones[1] == smartphones[0].price * smartphones[0].quantity + smartphones[1].price * smartphones[1].quantity
+    assert (smartphones[0] + smartphones[1] == smartphones[0].price * smartphones[0].quantity + smartphones[1].price *
+            smartphones[1].quantity)
     try:
         fruits[0] + smartphones[0]
     except TypeError:
         assert True
-
-
 
 
 def test_price(fruits):

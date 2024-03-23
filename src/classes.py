@@ -49,13 +49,11 @@ class Category:
             num_all_products += product.quantity
         return num_all_products
 
-
     def __str__(self):
         """
         Для класса Category добавляет строковое отображение в следующем виде:
         "Название категории, количество продуктов: 200 шт."
         """
-        #return f'{self.name}, количество продуктов:  шт.'
         return f'{self.name}, количество продуктов: {len(self)} шт.'
 
     def __repr__(self):
@@ -87,14 +85,12 @@ class Product:
         """
         return cls(**product_data)
 
-
     def __len__(self):
         """
         Возвращает количество оставшихся товаров конкретного вида (продукта)
         По сути это self.quantity. Написано только ради использования метода __len__
         """
         return self.quantity
-
 
     def __str__(self):
         """
@@ -107,7 +103,7 @@ class Product:
         """
         Сложение объектов между собой
         """
-        if type(self) != type(other):
+        if type(self) is not type(other):
             raise TypeError('Складывать можно только объекты одного типа.')
         return self.price * self.quantity + other.price * other.quantity
 
