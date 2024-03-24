@@ -2,7 +2,6 @@ import pytest
 from src import classes, utils
 
 
-
 @pytest.fixture
 def category():
     return (classes.Category("fruits", "description", ["apple", "banana", "grape"]),
@@ -30,7 +29,8 @@ def lawn_grass():
 @pytest.fixture
 def aka_products_json():
     x = classes.Smartphone("smartphone", "smartphone_description", 300.50, 0, 2.0, "model", 32, "red")
-    return (classes.Category("fruits", "description", [x,]))
+    return classes.Category("fruits", "description", [x,])
+
 
 def test_repr_mixin_init():
     """
@@ -74,7 +74,6 @@ def test_products(fruits, smartphones):
 
     y[0][0].products = smartphones[0]
     assert y[0][0].number_of_unique_products == 5
-
 
     with pytest.raises(TypeError, match='Добавлять можно только Продукты и дочение классы'):
         y[0][0].products = "Ошибочная строка"
