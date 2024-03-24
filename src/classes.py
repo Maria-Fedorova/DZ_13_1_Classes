@@ -69,8 +69,11 @@ class Category(ReprMixin):
         Добавляет продукт в категорию
         """
         if isinstance(new_product, Product):
-            self.__products.append(new_product)
-            self.number_of_unique_products += 1
+            if new_product.quantity <= 0:
+                raise ValueError("Товар с нулевым количеством не может быть добавлен")
+            else:
+                self.__products.append(new_product)
+                self.number_of_unique_products += 1
         else:
             raise TypeError("Добавлять можно только Продукты и дочение классы")
 
@@ -89,6 +92,28 @@ class Category(ReprMixin):
         "Название категории, количество продуктов: 200 шт."
         """
         return f'{self.name}, количество продуктов: {len(self)} шт.'
+
+    @property
+    def average_price(self):
+        try:
+            sum_price_per_category = 0
+            for product in self.__products:
+                sum_price_per_category += (product.price * product.quantity)
+            av_price_per_category = sum_price_per_category / len(self)
+            return av_price_per_category
+        except ZeroDivisionError:
+            return 0
+
+
+
+
+
+
+
+
+
+
+
 
 
 class Product(ReprMixin, Goods):
@@ -190,3 +215,47 @@ class LawnGrass(Product, ReprMixin):
         self.manufacturer_country = manufacturer_country
         self.germination_period = germination_period
         self.color = color
+
+
+
+
+
+
+
+
+
+
+
+
+# def load_data(filename):
+#     """
+#     Загружает информацию из файла
+#     """
+#     with open(file=os.path.abspath(filename), mode='r', encoding='utf-8') as file:
+#         return json.load(file)
+#
+#
+# def create_objects_category_product(data):
+#     """
+#     Создает объекты
+#     """
+#     new_category = []
+#     new_product = []
+#     for object in data:
+#         if len(data) != 0:
+#             category = Category(object['name'], object['description'], [])
+#             for i_product in object['products']:
+#                 product = Product(i_product['name'], i_product['description'], i_product['price'],
+#                                               i_product['quantity'])
+#                 new_product.append(product)
+#                 category.products = product
+#             new_category.append(category)
+#     return new_category, new_product
+#
+#
+# x = load_data('products.json')
+# y = create_objects_category_product(x)
+
+#print(y[0][0].products)
+#print(y[0][1].products)
+#print(y[0][2].products)

@@ -2,6 +2,7 @@ import pytest
 from src import classes, utils
 
 
+
 @pytest.fixture
 def category():
     return (classes.Category("fruits", "description", ["apple", "banana", "grape"]),
@@ -17,13 +18,19 @@ def fruits():
 @pytest.fixture
 def smartphones():
     return (classes.Smartphone("smartphone", "smartphone_description", 300.50, 5, 2.0, "model", 32, "red"),
-            classes.Smartphone("smartphone", "smartphone_description", 300.50, 5, 2.0, "model", 32, "red"))
+            classes.Smartphone("smartphone", "smartphone_description", 300.50, 5, 2.0, "model", 32, "red"),
+            classes.Smartphone("smartphone", "smartphone_description", 300.50, 0, 2.0, "model", 32, "red"))
 
 
 @pytest.fixture
 def lawn_grass():
     return (classes.LawnGrass("lawn_grass", "lawn_grass_description", 300.50, 5, "England", 2.3, "red"),)
 
+
+@pytest.fixture
+def aka_products_json():
+    x = classes.Smartphone("smartphone", "smartphone_description", 300.50, 0, 2.0, "model", 32, "red")
+    return (classes.Category("fruits", "description", [x,]))
 
 def test_repr_mixin_init():
     """
@@ -67,10 +74,13 @@ def test_products(fruits, smartphones):
 
     y[0][0].products = smartphones[0]
     assert y[0][0].number_of_unique_products == 5
-    try:
+
+
+    with pytest.raises(TypeError, match='Добавлять можно только Продукты и дочение классы'):
         y[0][0].products = "Ошибочная строка"
-    except TypeError:
-        assert True
+
+    with pytest.raises(ValueError, match='Товар с нулевым количеством не может быть добавлен'):
+        y[0][0].products = smartphones[2]
 
 
 def test__len__cat():
@@ -92,6 +102,16 @@ def test__str__cat():
     y = utils.create_objects_category_product(x)
     assert str(y[0][0]) == f'{y[0][0].name}, количество продуктов: {len(y[0][0])} шт.'
     assert str(y[0][1]) == f'{y[0][1].name}, количество продуктов: {len(y[0][1])} шт.'
+
+
+def test_average_price(smartphones, aka_products_json):
+    """
+    Поиск средней цены товара с проверкой деления на нуль
+    """
+    x = utils.load_data('products.json')
+    y = utils.create_objects_category_product(x)
+    assert y[0][0].average_price == (180000.0 * 5 + 210000.0 * 8 + 31000.0 * 14) / (5 + 8 + 14)
+    assert aka_products_json.average_price == 0
 
 
 def test_product_init(fruits):
