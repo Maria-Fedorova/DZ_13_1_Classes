@@ -1,4 +1,37 @@
-class Category:
+from abc import ABC, abstractmethod
+
+
+class Goods(ABC):
+
+    """Создание абстрактного класса Goods"""
+
+    @abstractmethod
+    def __str__(self):
+        pass
+
+    @abstractmethod
+    def __len__(self):
+        pass
+
+    @abstractmethod
+    def __add__(self, other):
+        pass
+
+    @abstractmethod
+    def price(self):
+        pass
+
+
+class ReprMixin:
+
+    def __init__(self, *args, **kwargs):
+        repr(self)
+
+    def __repr__(self):
+        return f"Создан объект класса {self.__class__.__name__} {self.__dict__.values()}"
+
+
+class Category(ReprMixin):
 
     """Создание класса Category"""
 
@@ -19,6 +52,7 @@ class Category:
         self.__products = products
         self.number_of_unique_products += len(self.__products)
         self.number_of_categories += 1
+        super().__init__()
 
     @property
     def products(self):
@@ -56,11 +90,8 @@ class Category:
         """
         return f'{self.name}, количество продуктов: {len(self)} шт.'
 
-    def __repr__(self):
-        return f'name={self.name}, description={self.description}, products={self.__products})'
 
-
-class Product:
+class Product(ReprMixin, Goods):
 
     """Создание класса Product"""
 
@@ -77,6 +108,7 @@ class Product:
         self.description = description
         self.price = price
         self.quantity = quantity
+        super().__init__()
 
     @classmethod
     def create_product(cls, product_data):
@@ -121,11 +153,10 @@ class Product:
     def price(self):
         self.__price = None
 
-    def __repr__(self):
-        return f'name={self.name}, description={self.description}, price={self.price}, number_present={self.quantity})'
 
+class Smartphone(Product, ReprMixin):
 
-class Smartphone(Product):
+    """Создание дочернего класса Smartphone"""
 
     # Свойства (атрибуты) класса
     performance: float
@@ -143,7 +174,9 @@ class Smartphone(Product):
         self.color = color
 
 
-class LawnGrass(Product):
+class LawnGrass(Product, ReprMixin):
+
+    """Создание дочернего класса LawnGrass"""
 
     # Свойства (атрибуты) класса
     manufacturer_country: str

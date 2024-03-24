@@ -25,6 +25,14 @@ def lawn_grass():
     return (classes.LawnGrass("lawn_grass", "lawn_grass_description", 300.50, 5, "England", 2.3, "red"),)
 
 
+def test_repr_mixin_init():
+    """
+    Тест repr класса Mixin
+    """
+    repr_mixin_1 = classes.ReprMixin()
+    assert repr(repr_mixin_1) == 'Создан объект класса ReprMixin dict_values([])'
+
+
 def test_category_init(category):
     """
     Тест инициализации класса Категория
@@ -34,6 +42,8 @@ def test_category_init(category):
     assert category[0]._Category__products == ["apple", "banana", "grape"]
     assert category[0].number_of_unique_products == 3
     assert category[1].number_of_unique_products == 3
+    assert repr(category[0]) == (f"Создан объект класса Category dict_values(['fruits', 'description', "
+                                 f"['apple', 'banana', 'grape'], 3, 1])")
 
 
 def test_products(fruits, smartphones):
@@ -92,6 +102,7 @@ def test_product_init(fruits):
     assert fruits[0].description == "apple_description"
     assert fruits[0].price == 300.50
     assert fruits[0].quantity == 5
+    assert repr(fruits[0]) == f"Создан объект класса Product dict_values(['apple', 'apple_description', 300.5, 5])"
 
 
 def test_create_product():
@@ -147,11 +158,13 @@ def test_smartphone_init(smartphones):
     assert smartphones[0].model == "model"
     assert smartphones[0].built_in_memory == 32
     assert smartphones[0].color == "red"
+    assert repr(smartphones[0]) == (f"Создан объект класса Smartphone dict_values(['smartphone', "
+                                    f"'smartphone_description', 300.5, 5, 2.0, 'model', 32, 'red'])")
 
 
 def test_lawngrass_init(lawn_grass):
     """
-    Тест инициализации класса Смартфон
+    Тест инициализации класса Трава газонная
     """
     assert lawn_grass[0].name == "lawn_grass"
     assert lawn_grass[0].description == "lawn_grass_description"
@@ -160,6 +173,8 @@ def test_lawngrass_init(lawn_grass):
     assert lawn_grass[0].manufacturer_country == "England"
     assert lawn_grass[0].germination_period == 2.3
     assert lawn_grass[0].color == "red"
+    assert repr(lawn_grass[0]) == (f"Создан объект класса LawnGrass dict_values(['lawn_grass', "
+                                   f"'lawn_grass_description', 300.5, 5, 'England', 2.3, 'red'])")
 
 
 def test_number_of_categories(category):
